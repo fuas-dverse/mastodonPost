@@ -1,0 +1,9 @@
+version: "3"
+services:
+  mastodon:
+    container_name: mastodon
+    image: iuliaaaaa/tutoringplatform:mastodon
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - 29019:29019

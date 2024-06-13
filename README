@@ -1,0 +1,51 @@
+Kafka-Mastodon Integration
+
+This project integrates Kafka with Mastodon to process messages and post updates.
+ The following instructions will guide you through setting up and running the project using Docker.
+
+Prerequisites
+- Docker installed on your machine
+- Kafka and Mastodon accounts with necessary credentials
+- Environment Variables
+- Ensure you have the following environment variables set:
+
+MASTODON_ACCESS_TOKEN
+MASTODON_API_BASE_URL
+KAFKA_BOOTSTRAP_SERVER
+KAFKA_SECURITY_PROTOCOL
+KAFKA_SASL_MECHANISMS
+KAFKA_SASL_USERNAME
+KAFKA_SASL_PASSWORD
+
+You can store these in a .env file for convenience.
+
+Instructions
+
+1. Clone the Repository
+
+git clone <repository-url>
+cd <repository-directory>
+
+2. Build the Docker Image
+
+docker build -t kafka-mastodon-integration .
+
+3. Run the Docker Container
+
+a. Using Environment Variables Directly
+
+docker run -d -p 80:80 \
+  -e MASTODON_ACCESS_TOKEN=<your_mastodon_access_token> \
+  -e MASTODON_API_BASE_URL=<your_mastodon_api_base_url> \
+  -e KAFKA_BOOTSTRAP_SERVER=<your_kafka_bootstrap_server> \
+  -e KAFKA_SECURITY_PROTOCOL=<your_kafka_security_protocol> \
+  -e KAFKA_SASL_MECHANISMS=<your_kafka_sasl_mechanisms> \
+  -e KAFKA_SASL_USERNAME=<your_kafka_sasl_username> \
+  -e KAFKA_SASL_PASSWORD=<your_kafka_sasl_password> \
+  kafka-mastodon-integration .
+
+b. Using .env File
+Create a .env file with the required environment variables
+(as shown above) and run the container with:
+
+docker run -d -p 80:80 --env-file .env my-kafka-app
