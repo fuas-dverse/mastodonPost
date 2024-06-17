@@ -5,6 +5,8 @@ from mastodon import Mastodon
 from KafkaManager import KafkaManager
 from dotenv import load_dotenv
 
+from contentModeration import load_profanity_filter, is_content_appropriate
+
 logging.basicConfig(level=logging.INFO)
 
 
@@ -43,6 +45,7 @@ def post_to_mastodon(mastodon, message):
 
 def main():
     load_environment()
+    load_profanity_filter()
     mastodon = create_mastodon_client()
     kafka_manager = KafkaManager()
 
@@ -67,7 +70,10 @@ def main():
             results = final_output['content'][-1]['message']
 
             formatted_message = format_mastodon_message(intent, results)
-            post_to_mastodon(mastodon, formatted_message)
+            if is_content_appropriate(formatted_message):
+                post_to_mastodon(mastodon, formatted_message)
+            else:
+                logging.warning("Inappropriate content detected and blocked from posting.")
 
             time.sleep(5)
 
